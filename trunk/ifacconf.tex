@@ -25,12 +25,10 @@
 \thanks[footnoteinfo]{This work was supported in part by the National Technological Agency. (sponsor and financial support acknowledgment goes here). Paper titles should be written in uppercase and lowercase letters, not all uppercase.}
 
 \author[First]{First A. Author} 
-\author[Second]{Second B. Author, Jr.} 
-\author[Third]{Third C. Author}
+
 
 \address[First]{National Institute of Standards and Technology, Boulder, CO 80305 USA (Tel: 303-555-5555; e-mail: author@ boulder.nist.gov).}                                              
-\address[Second]{Colorado State University, Fort Collins, CO 80523 USA (e-mail: author@lamar. colostate.edu)}
-\address[Third]{Electrical Engineering Department, Seoul National University, Seoul, Korea, (e-mail: author@snu.ac.kr)}
+
 
           
 %\begin{keyword}                           % Five to ten keywords,  
@@ -47,26 +45,47 @@ These instructions give you guidelines for preparing papers for IFAC conferences
 \end{frontmatter}
 
 \section{Introduction}
-\textit{Introduction, and what the problem is, and some related work. report of what happens in the rest of the document}
+
+%Prosumer and BRP
+%Domain in context
+%aggregaion
+%Reduce number of messages recieved by the BRP
+%Inroduce intermediate node called an aggregator node
+%report of what happens in the rest of the document
+
+\section{related work}
+
+%aggregator
+%aggregation problem
+%our artikel
+
 
 
 \section{Aggregator Node}
+%Generalization of the aggregator problem
+%strategy
+%meassures for the strategy
 
-Next we see a few subsections.
+%Our strategy
+%why it is important to balance
 
-
-\subsection{Formal introduction of the problem}
-
-
-\subsection{Formal solution of the problem}
-
-
-
+\section{Implementation}%low
+%webservice
+%node reuse
 
 
 
 \section{Experimental evaluation}
+The data used in this project is from the MeRegio project~\cite{}. 
+We only use consumption data in this experiment because we deem that it is not necessary generate production flex-offers to achieve realistic flex-offers.  
+All the tests are run in accelerated time.
+%accelerated time
 
+We test five strategies that only vary on the set of aggregates, \begin{math} AGG_s \end{math}. The test is conducted with 1, 2, 4, 8, and 16 aggregators. 
+To test if the aggregator node reduces the amount of flex-offers received by the BRP we run the experiment with an average of 100, 1000, and 10,000 flex-offers send per time unit. 
+%data set
+
+%results
 
 \section{Conclusion and future work}
 

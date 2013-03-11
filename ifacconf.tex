@@ -22,20 +22,16 @@
 
 \title{Style for IFAC Conferences \& Symposia: Use Title Case for Paper Title\thanksref{footnoteinfo}} % Title, preferably not more than 10 words.
 
-\thanks[footnoteinfo]{This work was supported in part by the National Technological Agency. (sponsor and financial support acknowledgment goes here). Paper titles should be written in uppercase and lowercase letters, not all uppercase.}
+\thanks[footnoteinfo]{This articel is written as a part of the course Publishing Papers in the Peer-Reviewing System. It is based on \cite{} which is authored by Alex B. Andersen, Rasmus V. Prentow, and myself.}
 
-\author[First]{First A. Author} 
+\author[First]{Kim A. Jakobsen} 
 
 
-\address[First]{National Institute of Standards and Technology, Boulder, CO 80305 USA (Tel: 303-555-5555; e-mail: author@ boulder.nist.gov).}                                              
+\address[First]{Department of Computer Science, Aalborg University, Selma Lagerl\"{o}fs Vej 300 DK-9220 Aalborg East (e-mail: kjakob09@student.aau.dk).}                                              
 
 
           
-%\begin{keyword}                           % Five to ten keywords,  
-%Cicero; Catiline; orations.               % chosen from the IFAC 
-%\end{keyword}                             % keyword list or with the 
-                                          % help of the Automatica 
-                                          % keyword wizard
+
 
 
 \begin{abstract}                          % Abstract of not more than 250 words.
@@ -46,11 +42,28 @@ These instructions give you guidelines for preparing papers for IFAC conferences
 
 \section{Introduction}
 
+\todo{aggregator = aggregator node}
+\todo{BRP = BRP node}
+
+
+Renewerable energy sources such as solar and wind share the undesirable attribute that they are uncontrollable. 
+This is in contrast to e.g. fossile-fuled power plants where it is possible to ajust and control power production. 
+Micro-Request-Based Aggregation, Forcasting and Scheaduling of Energy Demand, Supply and Distribution~\cite{} (MIRABEL) is a EU project that addresses this challange. 
+Insted of controlling the power production the goal is to predict and control the power consumption of the consumers. 
+If the Balance Responsible Party (BRP) can control when consumers use power, and can forcast when renewerable energy is produced then they only have to relay on fossile-fuel when renewerable energy is sparce.
+The MIRABEL system allows consumers and producsers of energy to sent an offer of flexibility to the BRP, this is called a flex-offer. 
+The BRP is now able to balance consumption with production and control when energy is consumed to some degree.
+
+An eksampel of a flex-offer is 
+
+
+
 %Prosumer and BRP
 %Domain in context
 %aggregaion
 %Reduce number of messages recieved by the BRP
 %Inroduce intermediate node called an aggregator node
+%nodes in mirabel
 %report of what happens in the rest of the document
 
 \section{related work}
@@ -65,6 +78,7 @@ These instructions give you guidelines for preparing papers for IFAC conferences
 %Generalization of the aggregator problem
 %strategy
 %meassures for the strategy
+%%explain load
 
 %Our strategy
 %why it is important to balance
@@ -75,21 +89,49 @@ These instructions give you guidelines for preparing papers for IFAC conferences
 
 
 
-\section{Experimental evaluation}
+\section{Experimental Evaluation}
+\subsection{Experimental Data}
+
 The data used in this project is from the MeRegio project~\cite{}. 
-We only use consumption data in this experiment because we deem that it is not necessary generate production flex-offers to achieve realistic flex-offers.  
+We only use consumption data in this experiment because we deem that it is not necessary generate production flex-offers to achieve realistic data.  
 All the tests are run in accelerated time.
-%accelerated time
 
-We test five strategies that only vary on the set of aggregates, \begin{math} AGG_s \end{math}. The test is conducted with 1, 2, 4, 8, and 16 aggregators. 
+
+We test six strategies that only vary on the set of aggregates, \begin{math} AGG_s \end{math}. The test is conducted with 0, 1, 2, 4, 8, and 16 aggregators. 
 To test if the aggregator node reduces the amount of flex-offers received by the BRP we run the experiment with an average of 100, 1000, and 10,000 flex-offers send per time unit. 
-%data set
 
-%results
+\subsection{Results}
+\todo{brug load mere}
+\todo{inset figures}
+In Figure \ref{fig:brpload} the load on the BRP is shown in a double logarithmic graph. 
+The legend shows the number of aggregators corresponding to the six different stretegies, 
+the x-axis is the total number of flex-offers sent, 
+and the y-axis shows the total number of flex-offers the BRP recieves.
+
+In Figure \ref{fig:aggload} the load on the aggregator\(s\) is shown. 
+The x-axis is the total number of flex-offers sent,
+and the y-axis is the maximum number of flex-offers recieved by the set of aggregators used. 
+Remember that all the stretegies use round-robin algorithm as distribution function. 
+
+The results indikate that load on the BRP is lower if only one aggregator is used. 
+This is because when the flex-offers are spred across more aggregator nodes the aggregator node will not be able to aggregate as many flex-offers as if one single aggregator node had all the flex-offers. 
+This means that if one aggregator node recieve all the flex-offers then is able to reduce the number of flex-offers sent to the BRP.
+
+We assume that it is desirable that the number of flexoffers recieved by both the aggregator nodes and the BRP is kept as low as possible.
+It is then possible to combine the two graphs and find the intersections.
+The intersections represents the optimal number of aggregator nodes at the given number of flex-offers. 
+
+In Figure \ref{fig:intersection} the load of the aggregators and the load of the BRP is displayed.
+The x-axis is the number of aggregators, and the y-axis is a presentage representation of the load on the nodes.
+The blue line line represents load on the aggregator node.
+The red, gray, and blue are the load on the BRP node with respectivly with an average of 100, 1000, and 10,000 flex-offers send per time unit.
+
+The two visible intersectoins indicate the optimal set of aggregaters at an given average of flex-offers sent. 
+These results allows us to determine the number of aggregator nodes to use when the average number of flex-offers sent is know, and our proposed strategy is used.   
 
 \section{Conclusion and future work}
 
-
+%the number of flexoffers may vary, = make number of aggregator nodes dynamic.
 
 
 \section{Conclusion}

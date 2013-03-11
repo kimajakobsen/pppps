@@ -2,6 +2,9 @@
 
 \usepackage{natbib}            % you should have natbib.sty
 \usepackage{graphicx}          % Include this line if your 
+\usepackage{todo}
+\usepackage{subfigure}
+
                                % document contains figures,
 %\usepackage[dvips]{epsfig}    % or this line, depending on which
                                % you prefer.													
@@ -20,7 +23,7 @@
 
 \begin{frontmatter}
 
-\title{Style for IFAC Conferences \& Symposia: Use Title Case for Paper Title\thanksref{footnoteinfo}} % Title, preferably not more than 10 words.
+\title{Scaling Communication of Energy Demand Flexibility using Destributed Aggregation} % Title, preferably not more than 10 words.
 
 \thanks[footnoteinfo]{This articel is written as a part of the course Publishing Papers in the Peer-Reviewing System. It is based on \cite{} which is authored by Alex B. Andersen, Rasmus V. Prentow, and myself.}
 
@@ -35,7 +38,7 @@
 
 
 \begin{abstract}                          % Abstract of not more than 250 words.
-These instructions give you guidelines for preparing papers for IFAC conferences. Use this document as a template to compose your paper if you are using Microsoft Word 6.0 or later. Otherwise, use this document as an instruction set. Please use this document as a “template” to prepare your manuscript. For submission guidelines, follow instructions on paper submission system as well as the Conference website. There is a very small blank line immediately above the abstract, do not delete it; it sets the footnote at the bottom of this column.
+The system MIRABEL allows 
 \end{abstract}
 
 \end{frontmatter}
@@ -48,61 +51,124 @@ These instructions give you guidelines for preparing papers for IFAC conferences
 
 Renewerable energy sources such as solar and wind share the undesirable attribute that they are uncontrollable. 
 This is in contrast to e.g. fossile-fuled power plants where it is possible to ajust and control power production. 
-Micro-Request-Based Aggregation, Forcasting and Scheaduling of Energy Demand, Supply and Distribution~\cite{} (MIRABEL) is a EU project that addresses this challange. 
-Insted of controlling the power production the goal is to predict and control the power consumption of the consumers. 
-If the Balance Responsible Party (BRP) can control when consumers use power, and can forcast when renewerable energy is produced then they only have to relay on fossile-fuel when renewerable energy is sparce.
-The MIRABEL system allows consumers and producsers of energy to sent an offer of flexibility to the BRP, this is called a flex-offer. 
-The BRP is now able to balance consumption with production and control when energy is consumed to some degree.
-
-An eksampel of a flex-offer is 
+Micro-Request-Based Aggregation, Forcasting and Scheaduling of Energy Demand, Supply and Distribution~\cite{} (MIRABEL) is a EU project that works to allow better unilization of renewerable energy. 
+Insted of controlling the power production the goal is to predict and control the power consumption. 
+If the Balance Responsible Party (BRP) can control when consumers use power and can forcast when renewerable energy is produced then it is only nessary to relay on fossile-fuel when renewerable energy is sparce.
+The MIRABEL system allows consumers and producsers (prosumers) of energy to sent an offer of flexibility to the BRP, this is called a flex-offer. 
+The BRP is now able to utalize more renewerable energy by shifting when energy is consumed.
 
 
+An exempel of a flex-offer could be the heating of a swimmingpool. 
+The consumer want his pool heated to 27$^\circ$ Celsius the next morning at 0700AM.
+The swimmingpool heater sents a flex-offer to the local BRP containing the relevant information such as energy required and the timespan in which the heating can commence.
+When the BRP recieve the flex-offer it is aggregated with other similar flex-offers. 
+The aggregated flex-offer which now corresponds to a larger energy amount can now be shiftet to when there are renewerable energy available, this is also done by the BRP.  
+The pool heater is informed when it should run and the consumer recives a discount on the energy price. 
 
-%Prosumer and BRP
-%Domain in context
-%aggregaion
-%Reduce number of messages recieved by the BRP
-%Inroduce intermediate node called an aggregator node
+
+MIRABEL have a large codebase which functions at a proof of concept level, one of the shortcommings in the project is the expensive communication.
+The system simulates prosumers which sent flex-offers to a simulated BRP. 
+This means that there is a many to one relationship between the prosumers and the BRP, this can be seen in Figure~\ref{fig:prosumerBrp}.
+By introducing new intermediate nodes, it recieve flexoffers from the prosumer, aggregates them, and send the aggregated flex-offers to the BRP, we can distrubute the flex-offer load on these and reduce the message load on the BRP node. 
+This new node type is called a aggregator node and can be seen in Figure~\ref{fig:prosumer-agg-brp}.
+
+\begin{figure*}[]
+   \centering
+    \subfigure[Without aggregator nodes.]{
+    \includegraphics[width=0.75\columnwidth]{images/prosumer-brp.pdf}
+    \label{fig:prosumerBrp}
+   }
+   \subfigure[With aggregator nodes.]{
+    \includegraphics[width=0.75\columnwidth]{images/prosumer-agg-brp.pdf}
+    \label{fig:prosumer-agg-brp}
+   }  
+  \caption{Four prosumers, displayed to the left of each sub-figure, sending flex-offers to a single BRP, displayed to the right.}
+  \label{fig:communicationservice}
+\end{figure*}
+
+
 %nodes in mirabel
 %report of what happens in the rest of the document
 
 \section{related work}
 
-%aggregator
-%aggregation problem
-%our artikel
+In \cite{carmeli} they explore aggregation on sending side, network switches, and intermediate message servers.
+The message server setup is similar to our approach but they assume that all messages can be aggregatet which is in contrast to this case.
 
-
+Aggregation of flex-object which is a generalization of flex-offers, is explored and efficient algorithm are proposed in \cite{ssdbm}. 
+These algorithm are implemented in the existing MIRABEL aggregation machanics which we reuse.
 
 \section{Aggregator Node}
-%Generalization of the aggregator problem
-%strategy
-%meassures for the strategy
-%%explain load
 
-%Our strategy
-%why it is important to balance
+We now know that there is a number of prosumers that sent flex-offers to aggregator nodes. 
+The flex-offers are aggregated info a few aggregated flex-offers and send to the BRP node.
+To make it possible to compare different setups e.g. different number of aggregator nodes used, we define define a strategy.
 
-\section{Implementation}%low
-%webservice
-%node reuse
+Formally we describe a strategy that consists of four elements:
+\begin{itemize}
+	\item An aggregation function, it defines how the possible merging of flex-offers is done.
+	\item A distribution function that defines how the flex-offers is allocated to the different aggregator nodes.
+	\item A set of aggregator nodes.
+	\item A BRP node.
+\end{itemize} 
 
 
+The naive approach is to make a strategy that have one aggregator node. 
+This aggregator recieves all flex-offers and therefore have the best conditions for aggregating the flex-offers into as few as possible aggregated flex-offers. 
+This would course the number of flex-offers send to the BRP node to be as the lowest possible. 
+However, this would only move the scalability problem to the aggregator node insted of the BRP node. 
+
+To express the desired effects of a stretegy we define the expression load.
+Load on a given node is defined by the number of flex-offers it recieves.
+It is desirable to have a stretegy renders as low as possible load on the BRP node and it is also desirable that the maximum load of the set of aggregators is low as possible.  
+
+
+We propose the Evenly Distributing Strategy.
+This strategy is defined as following:
+\begin{itemize}
+	\item As aggregation function we use the proposed algoithm described in \cite{ssdbm}.
+	\item As distribution function we use a round-robin algorithm which distribute the flex-offers evenly amongst the aggregator nodes.
+	\item We use a differnt number of aggregators for different experiments.
+	\item A brp is used.
+\end{itemize}
 
 \section{Experimental Evaluation}
 \subsection{Experimental Data}
 
-The data used in this project is from the MeRegio project~\cite{}. 
+The data used in this project is from the MeRegio project~\cite{meregio}. 
 We only use consumption data in this experiment because we deem that it is not necessary generate production flex-offers to achieve realistic data.  
 All the tests are run in accelerated time.
 
 
-We test six strategies that only vary on the set of aggregates, \begin{math} AGG_s \end{math}. The test is conducted with 0, 1, 2, 4, 8, and 16 aggregators. 
+We test six strategies that only vary on the set of aggregates. The test is conducted with 0, 1, 2, 4, 8, and 16 aggregators. 
 To test if the aggregator node reduces the amount of flex-offers received by the BRP we run the experiment with an average of 100, 1000, and 10,000 flex-offers send per time unit. 
 
 \subsection{Results}
 \todo{brug load mere}
-\todo{inset figures}
+
+\begin{figure*}[]
+   \centering
+    \subfigure[Without aggregator nodes.]{
+    \includegraphics[width=0.75\columnwidth]{images/resultA.pdf}
+    \label{fig:prosumerBrp}
+   }
+   \subfigure[With aggregator nodes.]{
+    \includegraphics[width=0.75\columnwidth]{images/resultC.pdf}
+    \label{fig:prosumer-agg-brp}
+   }  
+  \caption{Four prosumers, displayed to the left of each sub-figure, sending flex-offers to a single BRP, displayed to the right.}
+  \label{fig:communicationservice}
+\end{figure*}
+
+\begin{figure}%
+\centering
+\includegraphics[width=0.75\columnwidth]{images/resultD.pdf}
+\caption{}%
+\label{}%
+\end{figure}
+
+
+
 In Figure \ref{fig:brpload} the load on the BRP is shown in a double logarithmic graph. 
 The legend shows the number of aggregators corresponding to the six different stretegies, 
 the x-axis is the total number of flex-offers sent, 
@@ -134,55 +200,13 @@ These results allows us to determine the number of aggregator nodes to use when 
 %the number of flexoffers may vary, = make number of aggregator nodes dynamic.
 
 
-\section{Conclusion}
+%important to balan
 
-A conclusion section is not required. Although a conclusion may review the main points of the paper, do not replicate the abstract as the conclusion. A conclusion might elaborate on the importance of the work or suggest applications and extensions. 
-
-\begin{ack}                               % Place acknowledgements
-Partially supported by the Roman Senate.  % here.
-\end{ack}
-
-%\bibliographystyle{alpha}        % Include this if you use bibtex 
-%\bibliography{autosam}           % and a bib file to produce the 
-%\bibliography{autosam}
-                                 % bibliography (preferred). The
-                                 % correct style is generated by
-                                 % Elsevier at the time of printing.
-
-\begin{thebibliography}{xx}
-
-\bibitem[Able(1956)]{Abl:56}
-B.C. Able.
-\newblock Nucleic acid content of microscope.
-\newblock \emph{Nature}, 135:\penalty0 7--9, 1956.
-
-\bibitem[Able et~al.(1954)Able, Tagg, and Rush]{AbTaRu:54}
-B.C. Able, R.A. Tagg, and M.~Rush.
-\newblock Enzyme-catalyzed cellular transanimations.
-\newblock In A.F. Round, editor, \emph{Advances in Enzymology}, volume~2, pages
-  125--247. Academic Press, New York, 3rd edition, 1954.
-
-\bibitem[Keohane(1958)]{Keo:58}
-R.~Keohane.
-\newblock \emph{Power and Interdependence: World Politics in Transitions}.
-\newblock Little, Brown \& Co., Boston, 1958.
-
-\bibitem[Powers(1985)]{Pow:85}
-T.~Powers.
-\newblock Is there a way out?
-\newblock \emph{Harpers}, pages 35--47, June 1985.
-
-\bibitem[Soukhanov(1992)]{Heritage:92}
-A.~H. Soukhanov, editor.
-\newblock \emph{{The American Heritage. Dictionary of the American Language}}.
-\newblock Houghton Mifflin Company, 1992.
-
-\end{thebibliography}
 
 
 
 
 
 \appendix
-
+\bibliography{bibtex/bib}{}
 \end{document}

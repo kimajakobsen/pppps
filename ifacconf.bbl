@@ -1,8 +1,35 @@
-\begin{thebibliography}{0}
+\begin{thebibliography}{3}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Carmeli et~al.(2004)Carmeli, Gershinsky, Harpaz, Naaman, Nelken,
+  Satran, and Vortman]{carmeli}
+Boaz Carmeli, Gidon Gershinsky, Avi Harpaz, Nir Naaman, Haim Nelken, Julian
+  Satran, and Pnina Vortman.
+\newblock High throughput reliable message dissemination.
+\newblock In Hisham Haddad, Andrea Omicini, Roger~L. Wainwright, and Lorie~M.
+  Liebrock, editors, \emph{SAC}, pages 322--327. ACM, 2004.
+\newblock ISBN 1-58113-812-1.
+\newblock URL
+  \url{http://dblp.uni-trier.de/db/conf/sac/sac2004.html#CarmeliGHNNSV04}.
+
+\bibitem[MeRegio(2012)]{meregio}
+MeRegio.
+\newblock Meregio, 2012.
+\newblock URL \url{http://www.meregio.de/en/}.
+\newblock Retrieved: December 11th 2012.
+
+\bibitem[Siksnys et~al.(2012)Siksnys, Khalefa, and Pedersen]{ssdbm}
+Laurynas Siksnys, Mohamed~E. Khalefa, and Torben~Bach Pedersen.
+\newblock Aggregating and disaggregating flexibility objects.
+\newblock In Anastasia Ailamaki and Shawn Bowers, editors, \emph{SSDBM}, volume
+  7338 of \emph{Lecture Notes in Computer Science}, pages 379--396. Springer,
+  2012.
+\newblock ISBN 978-3-642-31234-2.
+\newblock URL
+  \url{http://dblp.uni-trier.de/db/conf/ssdbm/ssdbm2012.html\#SiksnysKP12}.
 
 \end{thebibliography}

@@ -2,10 +2,12 @@
 
 \usepackage{natbib}            % you should have natbib.sty
 \usepackage{graphicx}          % Include this line if your 
-\usepackage{todo}
+%\usepackage{todo}
 \usepackage{subfigure}
+\usepackage[hyphens]{url}
+
+%\usepackage[anythingbreaks]{breakurl}
 \usepackage{hyperref}
-\usepackage{breakurl}
 
                                % document contains figures,
 %\usepackage[dvips]{epsfig}    % or this line, depending on which
@@ -25,7 +27,7 @@
 
 \begin{frontmatter}
 
-\title{Scaling Communication of flexibility Object in Many-to-one using Distributed Aggregation} % Title, preferably not more than 10 words.
+\title{Scaling Many-to-one Communication of Flexibility Offers Using Distributed Aggregation} % Title, preferably not more than 10 words.
 
 \thanks[footnoteinfo]{This article is written as a part of the course Publishing Papers in the Peer-Reviewing System. It is based on \cite{SCEDFDA} which is authored by Alex B. Andersen, Rasmus V. Prentow, and myself.}
 
@@ -36,12 +38,13 @@
 
 
 \begin{abstract}                          
-The system MIRABEL allows producers and consumers (prosumers) to offer the balance responsible party (BRP) flexibility. 
+The system MIRABEL allows producers and consumers to offer the balance responsible party (BRP) flexibility. 
 This enables the BRP to shift energy demand to when renewable energy is available. 
 When the number of flexibility offers (flex-offers) increase it poses a scalability problem. 
-The flex-offers can be aggregated into fewer aggregated flex-offers, by creating an intermediate node that preforms aggregation, the number of flex-offers sent to the BRP is reduced.
-We define a systematic way to compare strategies and suggest a strategy we call Evenly Distributing Strategy. 
-We find the balance between the number of aggregator nodes and flex-offers send to achieve the lowest message load. 
+The flex-offers can be aggregated into fewer flex-offers. 
+By sending all flex-offers to intermediate nodes that preforms aggregation before passing the aggregated flexoffers on, the number of flex-offers send to the BRP is reduced.
+We define a systematic way to compare strategies and suggest a strategy called Evenly Distributing Strategy. 
+We find the balance between the number of intermediate aggregator nodes and flex-offers send to achieve the lowest message load. 
 \end{abstract}
 
 \end{frontmatter}
@@ -52,7 +55,7 @@ This is in contrast to e.g. fossil-fueled power plants where it is possible to a
 Micro-Request-Based Aggregation, Forecasting and Scheduling of Energy Demand, Supply and Distribution~\cite{mirabel} (MIRABEL) is a EU project that works to allow better utilization of renewable energy. 
 Instead of controlling the power production the goal is to predict and control the power consumption. 
 If the Balance Responsible Party (BRP) can control when consumers use power and can forecast when renewable energy is produced then it is only necessary to relay on fossil-fuel when renewable energy is sparse.
-The MIRABEL system allows consumers and producers (prosumers) of energy to sent an offer of flexibility to the BRP, this is called a flex-offer. 
+The MIRABEL system allows consumers and producers (prosumers) of energy to send an offer of flexibility to the BRP, this is called a flex-offer. 
 The BRP is now able to shift when energy is consumed to when renewable energy is produced.
 
 
@@ -65,7 +68,7 @@ The pool heater is informed when it should run and the consumer revives a discou
 
 
 MIRABEL have a large codebase which functions at a proof of concept level, one of the shortcomings in the project is the expensive communication.
-The system simulates prosumers which sent flex-offers to a simulated BRP. 
+The system simulates prosumers which send flex-offers to a simulated BRP. 
 This means that there is a many to one relationship between the prosumers and the BRP, this can be seen in Figure~\ref{fig:prosumerBrp}.
 From now on we view the prosumers and the BRP as nodes in the system.
 By introducing new intermediate nodes that receive flex-offers from the prosumer, aggregates them, and send the aggregated flex-offers to the BRP node, we can reduce the message load on the BRP node. 
@@ -100,7 +103,7 @@ These algorithm are implemented in the existing MIRABEL aggregation mechanics wh
 
 \section{Aggregator Node}
 
-We now know that there is a number of prosumers that sent flex-offers to aggregator nodes. 
+We now know that there is a number of prosumers that send flex-offers to aggregator nodes. 
 The flex-offers are aggregated into fewer aggregated flex-offers and send to the BRP node.
 To make it possible to compare different set-ups we define define a strategy.
 
@@ -116,7 +119,7 @@ An aggregation function it defines how the possible merging of flex-offers is do
 A distribution function defines how the flex-offers is allocated to the different aggregator nodes.
 The naive approach is to make a strategy is to use only one aggregator node. 
 This aggregator node receives all flex-offers and therefore have the best conditions for aggregating the flex-offers into as few as possible aggregated flex-offers. 
-This courses the number of flex-offers sent to the BRP node to be as low as possible. 
+This courses the number of flex-offers send to the BRP node to be as low as possible. 
 However, this would only move the scalability problem to the aggregator node instead of the BRP node. 
 
 To express the desired effects of a strategy we define the measure load.
@@ -170,21 +173,21 @@ To test if the aggregator node reduces the amount of flex-offers received by the
 
 In Figure \ref{fig:resultA} the load on the BRP node is shown in a double logarithmic graph. 
 The legend shows the number of aggregator nodes corresponding to the six different strategies, 
-the x-axis is the total number of flex-offers sent, 
+the x-axis is the total number of flex-offers send, 
 and the y-axis shows the total number of flex-offers the BRP node receives, this is know as load.
 
 In Figure \ref{fig:resultB} the load on the aggregator node\(s\) is shown. 
-The x-axis is the total number of flex-offers sent, 
+The x-axis is the total number of flex-offers send, 
 and the y-axis is the maximum load of the set of aggregator nodes used. 
 Remember that all the strategies use round-robin algorithm as distribution function, thus, all the flex-offers is distributed almost evenly. 
 
 The results indicate that load on the BRP node is lower if only one aggregator node is used. 
 This is because when the flex-offers are spread across more aggregator nodes the aggregator node will not be able to aggregate as many flex-offers as if one single aggregator node had all the flex-offers. 
-This means that if one aggregator node receive all the flex-offers then is able to reduce the number of flex-offers sent to the BRP node.
+This means that if one aggregator node receive all the flex-offers then is able to reduce the number of flex-offers send to the BRP node.
 
 We assume that it is desirable that the number of flex-offers received by both the aggregator nodes and the BRP node is kept as low as possible.
 It is possible to combine the two graphs and find the intersections.
-The intersections represents the optimal number of aggregator nodes at the given number of flex-offers sent per time unit. 
+The intersections represents the optimal number of aggregator nodes at the given number of flex-offers send per time unit. 
 
 In Figure \ref{fig:resultC} the load of the aggregator nodes and the load of the BRP node is displayed.
 The x-axis is the number of aggregator nodes, and the y-axis is a percentage representation of the load on the nodes.
@@ -192,19 +195,19 @@ The blue line represents load on the aggregator node.
 The red, grey, and blue are the load on the BRP node with respectively with an average of 100, 1000, and 10,000 flex-offers send per time unit.
 %Beskriv dette mereget mere, resultater.
 
-The two visible intersections indicate the optimal set of aggregator nodes at an given average of flex-offers sent. 
-These results allows us to determine the number of aggregator nodes to use when the average number of flex-offers sent is know, and our proposed strategy is used.   
+The two visible intersections indicate the optimal set of aggregator nodes at an given average of flex-offers send. 
+These results allows us to determine the number of aggregator nodes to use when the average number of flex-offers send is know, and our proposed strategy is used.   
 
 \section{Conclusion and future work}
-By moving the aggregation functionality from the BRP node to a set of aggregation nodes, we have reduced the overall number of flex-offers sent to the BRP node.
+By moving the aggregation functionality from the BRP node to a set of aggregation nodes, we have reduced the overall number of flex-offers send to the BRP node.
 We distribute the flex-offers to the aggregator nodes using round robin.   
-The aggregator nodes sent the aggregated flex-offers to the BRP node.
+The aggregator nodes send the aggregated flex-offers to the BRP node.
 A strategy can be defined to describe the configuration of this set-up.
 Strategies can be compared with different parameters. 
-For a given strategy is it possible, by varying the number of aggregator nodes, to find an optimal number of aggregator nodes for a given average of flex-offers sent.
+For a given strategy is it possible, by varying the number of aggregator nodes, to find an optimal number of aggregator nodes for a given average of flex-offers send.
 
 
-In a real world scenario the number of flex-offers sent may vary great during the course of a whole day. 
+In a real world scenario the number of flex-offers send may vary great during the course of a whole day. 
 This implies the need of adjusting the number of aggregator nodes used, this is only the case if Evenly Distribution Strategy is used.
 For further work more advanced strategies can be developed where the distribution strategy distributes based on how the aggregation strategy. 
 This would course the aggregation to be better but might also result in uneven load on the aggregator nodes.  
